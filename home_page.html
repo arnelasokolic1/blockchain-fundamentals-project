@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App - Select Categories</title>
+    <style>
+        /* General styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #fad0c4, #ff9a9e);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.8);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
+        .navbar h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff6f61;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+            position: relative;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #201e1e;
+        }
+
+        /* Header styling */
+        header {
+            text-align: center;
+            padding: 100px 20px 30px;
+        }
+
+        header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #ffe3e1;
+            margin-top: 10px;
+        }
+
+        /* Cards grid styling */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            cursor: pointer;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Add hover overlay */
+        .card::after {
+            content: "Click to start the quiz";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        /* Category description overlay */
+        .card .category-description {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            text-align: center;
+        }
+
+        .card:hover .category-description {
+            display: block;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #e55f4a;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Quiz App</h1>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">FAQ</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h2>Choose a category to begin your quiz journey!</h2>
+        <p>Explore different topics and challenge your knowledge.</p>
+    </header>
+
+    <main>
+        <div class="cards-grid">
+            <!-- Category 1 -->
+            <div class="card" onclick="openModal('general_knowledge.html')">
+                <img src="imgs/img1.png" alt="General Knowledge">
+                <div class="category-description">
+                    <h3>General Knowledge</h3>
+                    <p>Test your knowledge on various subjects like history, geography, and more!</p>
+                </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="card" onclick="openModal('science_quiz.html')">
+                <img src="imgs/img2.png" alt="Science">
+                <div class="category-description">
+                    <h3>Science</h3>
+                    <p>Test your understanding of physics, chemistry, biology, and more.</p>
+                </div>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="card" onclick="openModal('sport_quiz.html')">
+                <img src="imgs/img3.png" alt="Sport">
+                <div class="category-description">
+                    <h3>Sports</h3>
+                    <p>Challenge yourself with questions related to famous sports and athletes.</p>
+                </div>
+            </div>
+
+            <!-- Category 4 -->
+            <div class="card" onclick="openModal('history_quiz.html')">
+                <img src="imgs/img4.png" alt="History">
+                <div class="category-description">
+                    <h3>History</h3>
+                    <p>Explore important historical events, figures, and much more!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="cardModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">×</span>
+            <h3>Enter your name</h3>
+            <input type="text" id="userName" placeholder="Enter your name">
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        let categoryPage = '';
+
+        // Open Modal
+        function openModal(page) {
+            categoryPage = page;
+            document.getElementById('cardModal').style.display = 'flex';
+            // Reset the input field to be empty when opening the modal
+            document.getElementById('userName').value = '';
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('cardModal').style.display = 'none';
+        }
+
+        // Start Quiz and redirect to the correct page
+        function startQuiz() {
+            const userName = document.getElementById('userName').value;
+            if (userName) {
+                alert(`Starting quiz for ${userName}!`);
+                window.location.href = categoryPage; // Redirects to the quiz page for the selected category
+            } else {
+                alert('Please enter your name.');
+            }
+        }
+    </script>
+</body>
+</html>
