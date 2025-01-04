@@ -66,6 +66,47 @@
         .navbar {
             margin-bottom: 20px;
         }
+        /* Sidebar for Progress Tracker */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .sidebar h3 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .question-status {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-icon {
+            font-size: 1.2em;
+        }
+        .answered-correctly {
+            background: #d4edda;
+            color: #155724;
+        }
+        .answered-incorrectly {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .unanswered {
+            background: #fff3cd;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
@@ -100,6 +141,12 @@
         <div class="question-list" id="questionItems"></div>
     </div>
 
+    <!-- Sidebar for Progress Tracking -->
+    <div class="sidebar">
+        <h3>Progress Tracker</h3>
+        <div id="questionStatusList"></div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="congratulationsModal" tabindex="-1" aria-labelledby="congratulationsLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -125,90 +172,282 @@
             const web3 = new Web3(window.ethereum);
             const contractAddress = "0x5c0325f24ef153896d8E5Cf182Ef047dF18A0D31"; 
             const abi = [
-                {
-                    "inputs": [
-                        {
-                            "internalType": "string",
-                            "name": "_questionText",
-                            "type": "string"
-                        },
-                        {
-                            "internalType": "string[]",
-                            "name": "_options",
-                            "type": "string[]"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "_correctAnswer",
-                            "type": "uint256"
-                        }
-                    ],
-                    "name": "addQuestion",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                },
-                {
-                    "inputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "_score",
-                            "type": "uint256"
-                        }
-                    ],
-                    "name": "attemptQuiz",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                },
-                {
-                    "inputs": [], "stateMutability": "nonpayable", "type": "constructor"
-                },
-                {
-                    "anonymous": false, "inputs": [
-                        { "indexed": false, "internalType": "uint256", "name": "id", "type": "uint256" },
-                        { "indexed": false, "internalType": "string", "name": "questionText", "type": "string" },
-                        { "indexed": false, "internalType": "string[]", "name": "options", "type": "string[]" }
-                    ], "name": "QuestionAdded", "type": "event"
-                },
-                {
-                    "anonymous": false, "inputs": [
-                        { "indexed": false, "internalType": "uint256", "name": "id", "type": "uint256" }
-                    ], "name": "QuestionRemoved", "type": "event"
-                },
-                {
-                    "anonymous": false, "inputs": [
-                        { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
-                        { "indexed": false, "internalType": "uint256", "name": "score", "type": "uint256" }
-                    ], "name": "QuizAttempted", "type": "event"
-                },
-                {
-                    "inputs": [{ "internalType": "uint256", "name": "_id", "type": "uint256" }],
-                    "name": "removeQuestion",
-                    "outputs": [], "stateMutability": "nonpayable", "type": "function"
-                },
-                {
-                    "inputs": [], "name": "getQuestionCount", "outputs": [
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ], "stateMutability": "view", "type": "function"
-                },
-                {
-                    "inputs": [{ "internalType": "uint256", "name": "_id", "type": "uint256" }],
-                    "name": "getQuestion", "outputs": [
-                        { "internalType": "string", "name": "", "type": "string" },
-                        { "internalType": "string[]", "name": "", "type": "string[]" },
-                        { "internalType": "uint256", "name": "", "type": "uint256" }
-                    ], "stateMutability": "view", "type": "function"
-                }
-            ];
-
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_questionText",
+				"type": "string"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_options",
+				"type": "string[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_correctAnswer",
+				"type": "uint256"
+			}
+		],
+		"name": "addQuestion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_score",
+				"type": "uint256"
+			}
+		],
+		"name": "attemptQuiz",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "questionText",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string[]",
+				"name": "options",
+				"type": "string[]"
+			}
+		],
+		"name": "QuestionAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "QuestionRemoved",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "score",
+				"type": "uint256"
+			}
+		],
+		"name": "QuizAttempted",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "removeQuestion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuestion",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getQuestionCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			}
+		],
+		"name": "getUserScore",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "hasAttemptedQuiz",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "questions",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "questionText",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "correctAnswer",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			}
+		],
+		"name": "userHasAttempted",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "userScores",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
             const contract = new web3.eth.Contract(abi, contractAddress);
             let currentQuestionIndex = 0;
             let correctAnswers = 0;
 
             async function fetchQuestions() {
                 const questionItemsDiv = document.getElementById('questionItems');
+                const questionStatusList = document.getElementById('questionStatusList');
                 questionItemsDiv.innerHTML = '';
+                questionStatusList.innerHTML = '';
                 const progressBar = document.getElementById('progressBar');
 
                 try {
@@ -220,9 +459,9 @@
                         const options = questionData[1];
                         const correctAnswer = questionData[2];
 
+                        // Add question to main list
                         const questionItemDiv = document.createElement('div');
                         questionItemDiv.className = 'question-item';
-
                         questionItemDiv.innerHTML = `
                             <strong>${questionText}</strong>
                             <hr>
@@ -234,8 +473,17 @@
                                 `).join('')}
                             </div>
                         `;
-
                         questionItemsDiv.appendChild(questionItemDiv);
+
+                        // Add question to progress tracker
+                        const questionStatusDiv = document.createElement('div');
+                        questionStatusDiv.id = `question-status-${i}`;
+                        questionStatusDiv.className = 'question-status unanswered';
+                        questionStatusDiv.innerHTML = `
+                            <span>Question ${i + 1}</span>
+                            <span class="status-icon">⏳</span>
+                        `;
+                        questionStatusList.appendChild(questionStatusDiv);
                     }
                 } catch (error) {
                     console.error("Error fetching questions:", error);
@@ -245,50 +493,52 @@
             function checkAnswer(event, correctAnswer, questionCount) {
                 const selectedButton = event.target;
                 const selectedAnswer = parseInt(selectedButton.getAttribute('data-answer'));
+                const questionId = selectedButton.getAttribute('data-id');
+                const questionStatusDiv = document.getElementById(`question-status-${questionId}`);
                 const buttons = selectedButton.parentElement.querySelectorAll('.option-btn');
 
                 buttons.forEach(button => button.classList.remove('correct', 'incorrect'));
 
                 if (selectedAnswer === correctAnswer) {
                     selectedButton.classList.add('correct');
+                    questionStatusDiv.className = 'question-status answered-correctly';
+                    questionStatusDiv.querySelector('.status-icon').textContent = '✔️';
                     correctAnswers++;
                 } else {
                     selectedButton.classList.add('incorrect');
+                    questionStatusDiv.className = 'question-status answered-incorrectly';
+                    questionStatusDiv.querySelector('.status-icon').textContent = '❌';
                 }
+
+                const progress = Math.floor(((currentQuestionIndex + 1) / questionCount) * 100);
+                document.getElementById('progressBar').style.width = `${progress}%`;
 
                 currentQuestionIndex++;
-
-                const progressBar = document.getElementById('progressBar');
-                const progress = (currentQuestionIndex / questionCount) * 100;
-                progressBar.style.width = `${progress}%`;
-                progressBar.setAttribute('aria-valuenow', progress);
-
                 if (currentQuestionIndex === questionCount) {
-                    setTimeout(() => {
-                        document.getElementById('correctAnswersCount').textContent = correctAnswers;
-                        const modal = new bootstrap.Modal(document.getElementById('congratulationsModal'));
-                        modal.show();
-                    }, 500);
+                    showModal();
                 }
+            }
+
+            function showModal() {
+                const correctCount = correctAnswers;
+                document.getElementById('correctAnswersCount').textContent = `${correctCount}`;
+                const myModal = new bootstrap.Modal(document.getElementById('congratulationsModal'), {
+                    keyboard: false
+                });
+                myModal.show();
             }
 
             function restartQuiz() {
                 currentQuestionIndex = 0;
                 correctAnswers = 0;
                 fetchQuestions();
-                const progressBar = document.getElementById('progressBar');
-                progressBar.style.width = '0%';
-                progressBar.setAttribute('aria-valuenow', 0);
-
-                // Close the modal 
-                const modal = bootstrap.Modal.getInstance(document.getElementById('congratulationsModal'));
-                modal.hide();
+                const myModal = bootstrap.Modal.getInstance(document.getElementById('congratulationsModal'));
+                myModal.hide();
             }
 
             fetchQuestions();
         }
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
