@@ -3,301 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App - Select Categories</title>
+    <title>Quiz Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* General styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #fad0c4, #ff9a9e);
-            color: #333;
-            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            padding-top: 30px;
+            background: #f2f2f2;
         }
-
-        /* Navbar styling */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.8);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(8px);
-        }
-
-        .navbar h1 {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #ff6f61;
-        }
-
-        .navbar ul {
-            display: flex;
-            list-style: none;
-        }
-
-        .navbar ul li {
-            margin-left: 20px;
-            position: relative;
-        }
-
-        .navbar ul li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .navbar ul li a:hover {
-            color: #201e1e;
-        }
-
-        /* Header styling */
-        header {
-            text-align: center;
-            padding: 100px 20px 30px;
-        }
-
-        header h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            color: #ffe3e1;
-            margin-top: 10px;
-        }
-
-        /* Cards grid styling */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 40px 20px;
-            max-width: 1200px;
+        .container {
+            max-width: 800px;
             margin: 0 auto;
         }
-
-        .card {
-            position: relative;
-            cursor: pointer;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: white;
-        }
-
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Add hover overlay */
-        .card::after {
-            content: "Click to start the quiz";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            text-align: center;
-            padding: 10px;
-            font-size: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .card:hover::after {
-            opacity: 1;
-        }
-
-        /* Category description overlay */
-        .card .category-description {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            text-align: center;
-        }
-
-        .card:hover .category-description {
-            display: block;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-        }
-
-        .modal-content {
+        .question-list {
+            margin-top: 30px;
             background: white;
             padding: 20px;
             border-radius: 10px;
-            width: 400px;
-            text-align: center;
-            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .modal-content input {
-            width: 100%;
+        .question-item {
+            margin-bottom: 20px;
             padding: 10px;
-            margin: 10px 0;
+            background: #f9f9f9;
             border-radius: 5px;
-            border: 1px solid #ccc;
         }
-
-        .modal-content button {
-            padding: 10px 20px;
-            background-color: #ff6f61;
+        .options {
+            margin-top: 10px;
+        }
+        .option-btn {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            background-color: #007bff;
             color: white;
+            border-radius: 5px;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            text-align: left;
         }
-
-        .modal-content button:hover {
-            background-color: #e55f4a;
+        .option-btn:hover {
+            background-color: #0056b3;
         }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.5rem;
-            color: #333;
-            cursor: pointer;
+        .correct {
+            background-color: #28a745 !important;
+        }
+        .incorrect {
+            background-color: #dc3545 !important;
+        }
+        .progress {
+            height: 20px;
+        }
+        .modal-header {
+            background-color: #28a745;
+            color: white;
+        }
+        .modal-footer button {
+            background-color: #007bff;
+            color: white;
+        }
+        .navbar {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <h1>Quiz App</h1>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Categories</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">FAQ</a></li>
-        </ul>
-    </nav>
-
-    <header>
-        <h2>Choose a category to begin your quiz journey!</h2>
-        <p>Explore different topics and challenge your knowledge.</p>
-    </header>
-
-    <main>
-        <div class="cards-grid">
-            <!-- Category 1 -->
-            <div class="card" onclick="openModal('general_knowledge.html')">
-                <img src="imgs/img1.png" alt="General Knowledge">
-                <div class="category-description">
-                    <h3>General Knowledge</h3>
-                    <p>Test your knowledge on various subjects like history, geography, and more!</p>
-                </div>
-            </div>
-
-            <!-- Category 2 -->
-            <div class="card" onclick="openModal('science_quiz.html')">
-                <img src="imgs/img2.png" alt="Science">
-                <div class="category-description">
-                    <h3>Science</h3>
-                    <p>Test your understanding of physics, chemistry, biology, and more.</p>
-                </div>
-            </div>
-
-            <!-- Category 3 -->
-            <div class="card" onclick="openModal('sport_quiz.html')">
-                <img src="imgs/img3.png" alt="Sport">
-                <div class="category-description">
-                    <h3>Sports</h3>
-                    <p>Challenge yourself with questions related to famous sports and athletes.</p>
-                </div>
-            </div>
-
-            <!-- Category 4 -->
-            <div class="card" onclick="openModal('history_quiz.html')">
-                <img src="imgs/img4.png" alt="History">
-                <div class="category-description">
-                    <h3>History</h3>
-                    <p>Explore important historical events, figures, and much more!</p>
-                </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Quiz App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About the Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">FAQ</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </main>
+    </nav>
+
+    <div class="container">
+        <h1>Quiz Questions</h1>
+        <div class="progress mb-3">
+            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="question-list" id="questionItems"></div>
+    </div>
 
     <!-- Modal -->
-    <div class="modal" id="cardModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">×</span>
-            <h3>Enter your name</h3>
-            <input type="text" id="userName" placeholder="Enter your name">
-            <button onclick="startQuiz()">Start Quiz</button>
+    <div class="modal fade" id="congratulationsModal" tabindex="-1" aria-labelledby="congratulationsLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="congratulationsLabel">Congratulations!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have completed the quiz. Great job! You got <span id="correctAnswersCount"></span> correct answers.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        let categoryPage = '';
+        if (typeof window.ethereum === 'undefined') {
+            alert("MetaMask is not installed. Please install MetaMask to interact with the app.");
+        } else {
+            const web3 = new Web3(window.ethereum);
+            const contractAddress = "0x5c0325f24ef153896d8E5Cf182Ef047dF18A0D31"; 
+            const abi = [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "_questionText",
+                            "type": "string"
+                        },
+                        {
+                            "internalType": "string[]",
+                            "name": "_options",
+                            "type": "string[]"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "_correctAnswer",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "addQuestion",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "_score",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "attemptQuiz",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [], "stateMutability": "nonpayable", "type": "constructor"
+                },
+                {
+                    "anonymous": false, "inputs": [
+                        { "indexed": false, "internalType": "uint256", "name": "id", "type": "uint256" },
+                        { "indexed": false, "internalType": "string", "name": "questionText", "type": "string" },
+                        { "indexed": false, "internalType": "string[]", "name": "options", "type": "string[]" }
+                    ], "name": "QuestionAdded", "type": "event"
+                },
+                {
+                    "anonymous": false, "inputs": [
+                        { "indexed": false, "internalType": "uint256", "name": "id", "type": "uint256" }
+                    ], "name": "QuestionRemoved", "type": "event"
+                },
+                {
+                    "anonymous": false, "inputs": [
+                        { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+                        { "indexed": false, "internalType": "uint256", "name": "score", "type": "uint256" }
+                    ], "name": "QuizAttempted", "type": "event"
+                },
+                {
+                    "inputs": [{ "internalType": "uint256", "name": "_id", "type": "uint256" }],
+                    "name": "removeQuestion",
+                    "outputs": [], "stateMutability": "nonpayable", "type": "function"
+                },
+                {
+                    "inputs": [], "name": "getQuestionCount", "outputs": [
+                        { "internalType": "uint256", "name": "", "type": "uint256" }
+                    ], "stateMutability": "view", "type": "function"
+                },
+                {
+                    "inputs": [{ "internalType": "uint256", "name": "_id", "type": "uint256" }],
+                    "name": "getQuestion", "outputs": [
+                        { "internalType": "string", "name": "", "type": "string" },
+                        { "internalType": "string[]", "name": "", "type": "string[]" },
+                        { "internalType": "uint256", "name": "", "type": "uint256" }
+                    ], "stateMutability": "view", "type": "function"
+                }
+            ];
 
-        // Open Modal
-        function openModal(page) {
-            categoryPage = page;
-            document.getElementById('cardModal').style.display = 'flex';
-            // Reset the input field to be empty when opening the modal
-            document.getElementById('userName').value = '';
-        }
+            const contract = new web3.eth.Contract(abi, contractAddress);
+            let currentQuestionIndex = 0;
+            let correctAnswers = 0;
 
-        // Close Modal
-        function closeModal() {
-            document.getElementById('cardModal').style.display = 'none';
-        }
+            async function fetchQuestions() {
+                const questionItemsDiv = document.getElementById('questionItems');
+                questionItemsDiv.innerHTML = '';
+                const progressBar = document.getElementById('progressBar');
 
-        // Start Quiz and redirect to the correct page
-        function startQuiz() {
-            const userName = document.getElementById('userName').value;
-            if (userName) {
-                alert(`Starting quiz for ${userName}!`);
-                window.location.href = categoryPage; // Redirects to the quiz page for the selected category
-            } else {
-                alert('Please enter your name.');
+                try {
+                    const questionCount = await contract.methods.getQuestionCount().call();
+
+                    for (let i = 0; i < questionCount; i++) {
+                        const questionData = await contract.methods.getQuestion(i).call();
+                        const questionText = questionData[0];
+                        const options = questionData[1];
+                        const correctAnswer = questionData[2];
+
+                        const questionItemDiv = document.createElement('div');
+                        questionItemDiv.className = 'question-item';
+
+                        questionItemDiv.innerHTML = `
+                            <strong>${questionText}</strong>
+                            <hr>
+                            <div class="options">
+                                ${options.map((option, index) => `
+                                    <button class="option-btn" data-id="${i}" data-answer="${index + 1}" onclick="checkAnswer(event, ${correctAnswer}, ${questionCount})">
+                                        ${option}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        `;
+
+                        questionItemsDiv.appendChild(questionItemDiv);
+                    }
+                } catch (error) {
+                    console.error("Error fetching questions:", error);
+                }
             }
+
+            function checkAnswer(event, correctAnswer, questionCount) {
+                const selectedButton = event.target;
+                const selectedAnswer = parseInt(selectedButton.getAttribute('data-answer'));
+                const buttons = selectedButton.parentElement.querySelectorAll('.option-btn');
+
+                buttons.forEach(button => button.classList.remove('correct', 'incorrect'));
+
+                if (selectedAnswer === correctAnswer) {
+                    selectedButton.classList.add('correct');
+                    correctAnswers++;
+                } else {
+                    selectedButton.classList.add('incorrect');
+                }
+
+                currentQuestionIndex++;
+
+                const progressBar = document.getElementById('progressBar');
+                const progress = (currentQuestionIndex / questionCount) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute('aria-valuenow', progress);
+
+                if (currentQuestionIndex === questionCount) {
+                    setTimeout(() => {
+                        document.getElementById('correctAnswersCount').textContent = correctAnswers;
+                        const modal = new bootstrap.Modal(document.getElementById('congratulationsModal'));
+                        modal.show();
+                    }, 500);
+                }
+            }
+
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                correctAnswers = 0;
+                fetchQuestions();
+                const progressBar = document.getElementById('progressBar');
+                progressBar.style.width = '0%';
+                progressBar.setAttribute('aria-valuenow', 0);
+
+                // Close the modal 
+                const modal = bootstrap.Modal.getInstance(document.getElementById('congratulationsModal'));
+                modal.hide();
+            }
+
+            fetchQuestions();
         }
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
