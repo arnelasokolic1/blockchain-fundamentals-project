@@ -1,7 +1,8 @@
 //JUST TO KEEP MY CONTRACT 
 
 
-CONTRACT ADDRESS : 0x5c0325f24ef153896d8E5Cf182Ef047dF18A0D31
+CONTRACT ADDRESS : 0x52291463aF4E2C5145cE3C209A996A82FB3E76c2
+
 
 
 // SPDX-License-Identifier: MIT
@@ -15,8 +16,15 @@ contract QuizContract {
         uint256 correctAnswer;
     }
 
+    struct ContactMessage {
+        string name;
+        string email;
+        string message;
+    }
+
     address public admin;
     Question[] public questions;
+    ContactMessage[] public contactMessages;
 
     // Mappings to store user scores and whether they attempted the quiz
     mapping(address => uint256) public userScores;
@@ -26,6 +34,8 @@ contract QuizContract {
     event QuestionAdded(uint256 id, string questionText, string[] options);
     event QuestionRemoved(uint256 id);
     event QuizAttempted(address indexed user, uint256 score);
+    event ContactMessageReceived(uint256 id, string name, string email, string message);
+    event ContactMessageRemoved(uint256 id);
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can perform this action");
@@ -97,11 +107,48 @@ contract QuizContract {
     function userHasAttempted(address _user) public view returns (bool) {
         return hasAttemptedQuiz[_user];
     }
+
+    // Function for users to submit contact messages
+    function submitContactMessage(string memory _name, string memory _email, string memory _message) public {
+        contactMessages.push(ContactMessage(_name, _email, _message));
+        emit ContactMessageReceived(contactMessages.length - 1, _name, _email, _message);
+    }
+
+    // Function to remove a contact message (only accessible by admin)
+    function removeContactMessage(uint256 _id) public onlyAdmin {
+        require(_id < contactMessages.length, "Invalid contact message ID");
+        for (uint256 i = _id; i < contactMessages.length - 1; i++) {
+            contactMessages[i] = contactMessages[i + 1];
+        }
+        contactMessages.pop();
+        emit ContactMessageRemoved(_id);
+    }
+
+    // Function to get contact message by ID
+    function getContactMessage(uint256 _id)
+        public
+        view
+        returns (
+            string memory name,
+            string memory email,
+            string memory message
+        )
+    {
+        require(_id < contactMessages.length, "Invalid contact message ID");
+        ContactMessage memory cm = contactMessages[_id];
+        return (cm.name, cm.email, cm.message);
+    }
+
+    // Function to get the contact message count
+    function getContactMessageCount() public view returns (uint256) {
+        return contactMessages.length;
+    }
 }
 
 
 
-CONTRACT ABI 
+
+ABI 
 
 
 [
@@ -145,6 +192,50 @@ CONTRACT ABI
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "ContactMessageReceived",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "ContactMessageRemoved",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -211,7 +302,43 @@ CONTRACT ABI
 				"type": "uint256"
 			}
 		],
+		"name": "removeContactMessage",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
 		"name": "removeQuestion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			}
+		],
+		"name": "submitContactMessage",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -224,6 +351,77 @@ CONTRACT ABI
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "contactMessages",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getContactMessage",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getContactMessageCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

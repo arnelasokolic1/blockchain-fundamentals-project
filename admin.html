@@ -55,32 +55,35 @@
             background: #fdfbfb;
             border-radius: 5px;
         }
-		.remove-btn {
-    background-color: #dc3545;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    width: 100px; /* Fixed width */
-    height: 40px; /* Fixed height */
-    text-align: center; /* Ensures text is centered */
-    display: inline-block; 
-}
-
-.remove-btn:hover {
-    background-color: #c82333;
-}
-
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            display: inline-block;
+        }
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+        .contact-message-list {
+            margin-top: 30px;
+        }
+        .contact-message-item {
+            padding: 10px;
+            background: rgb(255, 255, 255);
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
 
-
-
-
-
-	
     <div class="container">
         <h1>Welcome, Admin!</h1>
         <form id="questionForm">
@@ -110,6 +113,11 @@
             <h3>Existing Questions</h3>
             <div id="questionItems"></div>
         </div>
+
+        <div class="contact-message-list">
+            <h3>Contact Messages</h3>
+            <div id="contactMessageItems"></div>
+        </div>
     </div>
 
     <script>
@@ -117,7 +125,7 @@
             alert("MetaMask is not installed. Please install MetaMask to interact with the app.");
         } else {
             const web3 = new Web3(window.ethereum);
-            const contractAddress = "0x5c0325f24ef153896d8E5Cf182Ef047dF18A0D31"; 
+            const contractAddress = "0x52291463aF4E2C5145cE3C209A996A82FB3E76c2"; 
             const abi = [
 	{
 		"inputs": [
@@ -159,6 +167,50 @@
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "ContactMessageReceived",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "ContactMessageRemoved",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -225,7 +277,43 @@
 				"type": "uint256"
 			}
 		],
+		"name": "removeContactMessage",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
 		"name": "removeQuestion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			}
+		],
+		"name": "submitContactMessage",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -238,6 +326,77 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "contactMessages",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getContactMessage",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getContactMessageCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -386,10 +545,7 @@
 		"type": "function"
 	}
 ]
-
             const contract = new web3.eth.Contract(abi, contractAddress);
-
-            let localQuestions = [];
 
             async function fetchQuestions() {
                 const questionItemsDiv = document.getElementById('questionItems');
@@ -397,20 +553,14 @@
 
                 try {
                     const questionCount = await contract.methods.getQuestionCount().call();
-                    localQuestions = [];
 
                     for (let i = 0; i < questionCount; i++) {
                         const questionData = await contract.methods.getQuestion(i).call();
                         const questionText = questionData[0];
 
-                        localQuestions.push({ id: i, questionText });
-
                         const questionItemDiv = document.createElement('div');
                         questionItemDiv.className = 'question-item';
-                        
-                        questionItemDiv.innerHTML = `
-                            <strong>${questionText}</strong>
-                        `;
+                        questionItemDiv.innerHTML = `<strong>${questionText}</strong>`;
 
                         const removeButton = document.createElement('button');
                         removeButton.textContent = 'Remove';
@@ -419,7 +569,7 @@
                             try {
                                 const accounts = await web3.eth.requestAccounts();
                                 const userAccount = accounts[0];
-                                
+                                  
                                 await contract.methods.removeQuestion(i).send({ from: userAccount });
                                 alert('Question removed successfully!');
                                 fetchQuestions(); // Refresh the question list
@@ -437,11 +587,53 @@
                 }
             }
 
+            async function fetchContactMessages() {
+                const contactMessageItemsDiv = document.getElementById('contactMessageItems');
+                contactMessageItemsDiv.innerHTML = ''; 
+
+                try {
+                    const contactMessageCount = await contract.methods.getContactMessageCount().call();
+
+                    for (let i = 0; i < contactMessageCount; i++) {
+                        const contactMessageData = await contract.methods.getContactMessage(i).call();
+                        const { name, email, message } = contactMessageData;
+
+                        const contactMessageItemDiv = document.createElement('div');
+                        contactMessageItemDiv.className = 'contact-message-item';
+                        contactMessageItemDiv.innerHTML = `<strong>${name}</strong><br><em>${email}</em><p>${message}</p>`;
+
+                        // Add Remove Button for each message
+                        const removeButton = document.createElement('button');
+                        removeButton.textContent = 'Remove';
+                        removeButton.className = 'remove-btn';
+                        removeButton.onclick = async () => {
+                            try {
+                                const accounts = await web3.eth.requestAccounts();
+                                const userAccount = accounts[0];
+                                  
+                                await contract.methods.removeContactMessage(i).send({ from: userAccount });
+                                alert('Contact message removed successfully!');
+                                fetchContactMessages(); // Refresh the contact message list
+                            } catch (error) {
+                                console.error("Error removing contact message:", error);
+                                alert("Failed to remove contact message.");
+                            }
+                        };
+
+                        contactMessageItemDiv.appendChild(removeButton);
+                        contactMessageItemsDiv.appendChild(contactMessageItemDiv);
+                    }
+                } catch (error) {
+                    console.error("Error fetching contact messages:", error);
+                }
+            }
+
             fetchQuestions();
+            fetchContactMessages();
 
             document.getElementById('questionForm').addEventListener('submit', async (event) => {
                 event.preventDefault();
-                
+
                 const questionText = document.getElementById('questionText').value;
                 const option1 = document.getElementById('option1').value;
                 const option2 = document.getElementById('option2').value;
@@ -458,13 +650,8 @@
                     const accounts = await web3.eth.requestAccounts();
                     const userAccount = accounts[0];
 
-                    await contract.methods.addQuestion(
-                        questionText,
-                        [option1, option2, option3, option4],
-                        correctAnswer
-                    ).send({ from: userAccount });
-
-                    alert("Question added successfully!");
+                    await contract.methods.addQuestion(questionText, [option1, option2, option3, option4], correctAnswer).send({ from: userAccount });
+                    alert('Question added successfully!');
                     fetchQuestions(); // Refresh the question list
                 } catch (error) {
                     console.error("Error adding question:", error);
