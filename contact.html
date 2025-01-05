@@ -9,15 +9,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
         }
-
+    
+       
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;  
+        }
+    
         section {
             display: flex;
             justify-content: center;
@@ -25,14 +29,14 @@
             min-height: 100vh;
             background-color: #ffffff;
         }
-
+    
         .container {
             position: relative;
             min-width: 1100px;
             min-height: 550px;
             display: flex;
         }
-
+    
         .container .contactInfo {
             position: absolute;
             top: 40px;
@@ -47,22 +51,23 @@
             z-index: 1;
             height: calc(100% - 80px);
             text-align: center;
+            
         }
-
+    
         .container .contactInfo h2 {
             color: #fff;
-            font-size: 24px;
+            font-size: 29px;
             font-weight: 500;
             margin-bottom: 20px;
         }
-
+    
         .container .contactInfo p {
             color: #fff;
             font-weight: 300;
             margin: 5px 0;
-            font-size: 16px;
+            font-size: 19px;
         }
-
+    
         .container .contactForm {
             position: absolute;
             background-color: #fff;
@@ -72,13 +77,13 @@
             height: 100%;
             box-shadow: 0 50px 50px rgba(0, 0, 0, 0.5);
         }
-
+    
         .container .contactForm h2 {
             color: #0f3959;
             font-size: 24px;
             font-weight: 500;
         }
-
+    
         .container .contactForm .formBox {
             position: relative;
             display: flex;
@@ -86,22 +91,22 @@
             flex-wrap: wrap;
             padding-top: 30px;
         }
-
+    
         .container .contactForm .formBox .inputBox {
             position: relative;
             margin: 0 0 35px 0;
         }
-
+    
         .container .contactForm .formBox .inputBox.w50 {
             width: 47%;
         }
-
+    
         .container .contactForm .formBox .inputBox.w100 {
             width: 100%;
         }
-
+    
         .container .contactForm .formBox .inputBox input,
-        .container .contactForm .formBox .inputBox textarea {
+        .container .contactForm .formBox .inputBox textarea {     
             width: 100%;
             resize: none;
             padding: 10px 5px;
@@ -110,8 +115,9 @@
             border: none;
             outline: none;
             border-bottom: 1px solid #777;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
         }
-
+    
         .container .contactForm .formBox .inputBox span {
             position: absolute;
             left: 5px;
@@ -119,10 +125,10 @@
             pointer-events: none;
             font-size: 17px;
             font-weight: 300;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /
         }
-
+    
         .container .contactForm .formBox .inputBox input:focus~span,
-        .container .contactForm .formBox .inputBox input:valid~span,
         .container .contactForm .formBox .inputBox input:valid~span,
         .container .contactForm .formBox .inputBox textarea:focus~span,
         .container .contactForm .formBox .inputBox textarea:valid~span {
@@ -132,7 +138,7 @@
             letter-spacing: 2px;
             color: deeppink;
         }
-
+    
         .container .contactForm .formBox .inputBox input[type="submit"] {
             position: relative;
             cursor: pointer;
@@ -140,29 +146,31 @@
             color: #fff;
             border: none;
             padding: 12px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
         }
-
+    
         .container .contactForm .formBox .inputBox input[type="submit"]:hover {
             background-color: #6245a5;
             font-weight: 500;
         }
-
+    
         .navbar {
             background: linear-gradient(to left, #a5b8dc, #8995cb, #8d84d3, #6e50b4);
         }
-
+    
         .navbar .navbar-brand,
         .navbar .nav-link {
             color: white;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
         }
-
+    
         .message {
             background: #f1f1f1;
             margin-bottom: 15px;
             padding: 15px;
             border-radius: 8px;
         }
-
+    
         .message button {
             float: right;
             background-color: #e74c3c;
@@ -171,12 +179,14 @@
             cursor: pointer;
             padding: 5px 10px;
             font-size: 12px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
         }
-
+    
         .message button:hover {
             background-color: #c0392b;
         }
     </style>
+    
 </head>
 
 <body>

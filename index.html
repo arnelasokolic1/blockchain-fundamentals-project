@@ -6,12 +6,12 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.2.2/web3.min.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <title>Quiz App</title>
+    <title>Blockchain Quiz App</title>
     <style>
         /* General styling */
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to left, #a5b8dc, #8995cb, #8d84d3, #6e50b4);
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            background: linear-gradient(to left, #a5b8dc, #8995cb, #796fc3, #5c3da5);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -53,12 +53,12 @@
 
         /* Address display box styling */
         #address {
-            background: linear-gradient(to right, #7971b9, #ae9bd9);
-            color: white;
+            background: rgb(238, 238, 238);
+            color: rgb(116, 82, 163);
             font-weight: bold;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px rgb(243, 224, 255);
             width: fit-content;
             font-size: 1.2em;
             text-align: center;
@@ -84,7 +84,7 @@
     </style>
 </head>
 <body>
-    <h1 id="welcomeText">Hello! Welcome to Quiz</h1>
+    <h1 id="welcomeText">Hello! Welcome to Blockchain Quiz</h1>
     <button id="connectToMetamask">Login using MetaMask</button>
     <div id="addressContainer" style="display: none;">
         <p id="address">Connected address: <span id="ConnectedAddress"></span></p>
@@ -92,7 +92,7 @@
     </div>
 
     <script>
-        const contractAddress = '0x5c0325f24ef153896d8E5Cf182Ef047dF18A0D31';  
+        const contractAddress = '0x52291463aF4E2C5145cE3C209A996A82FB3E76c2';  
         const contractABI = [
 	{
 		"inputs": [
@@ -134,6 +134,50 @@
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "ContactMessageReceived",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "ContactMessageRemoved",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -200,7 +244,43 @@
 				"type": "uint256"
 			}
 		],
+		"name": "removeContactMessage",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
 		"name": "removeQuestion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
+			}
+		],
+		"name": "submitContactMessage",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -213,6 +293,77 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "contactMessages",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getContactMessage",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getContactMessageCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -361,7 +512,6 @@
 		"type": "function"
 	}
 ]
-	
 
 
         $("#connectToMetamask").click(async function() {
