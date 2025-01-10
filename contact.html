@@ -154,16 +154,31 @@
             font-weight: 500;
         }
     
+        /* Navbar Styles */
         .navbar {
             background: linear-gradient(to left, #a5b8dc, #8995cb, #8d84d3, #6e50b4);
         }
-    
+
         .navbar .navbar-brand,
         .navbar .nav-link {
-            color: white;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+            color: white !important;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 18px;
         }
-    
+
+        /* Keep navbar links white on all states */
+        .navbar .nav-link:link,
+        .navbar .nav-link:visited,
+        .navbar .nav-link:hover,
+        .navbar .nav-link:active {
+            color: white !important;
+            text-decoration: none;
+        }
+
+        /* Align Navbar to the Left */
+        .navbar-nav {
+            margin-left: 0;
+        }
         .message {
             background: #f1f1f1;
             margin-bottom: 15px;
