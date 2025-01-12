@@ -125,7 +125,7 @@
             alert("MetaMask is not installed. Please install MetaMask to interact with the app.");
         } else {
             const web3 = new Web3(window.ethereum);
-            const contractAddress = "0x52291463aF4E2C5145cE3C209A996A82FB3E76c2"; 
+            const contractAddress = "0x2D44156802dcc6bfaB67115393Bf57E8c9e5b579"; 
             const abi = [
 	{
 		"inputs": [
@@ -146,19 +146,6 @@
 			}
 		],
 		"name": "addQuestion",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_score",
-				"type": "uint256"
-			}
-		],
-		"name": "attemptQuiz",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -501,25 +488,6 @@
 				"internalType": "uint256",
 				"name": "correctAnswer",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_user",
-				"type": "address"
-			}
-		],
-		"name": "userHasAttempted",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
 			}
 		],
 		"stateMutability": "view",

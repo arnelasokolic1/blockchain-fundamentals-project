@@ -81,18 +81,24 @@
         #nextPageButton:hover {
             transform: scale(1.1);
         }
+
+        /* Admin button styling */
+        #adminButton {
+            margin-top: 15px; /* A little space from the MetaMask button */
+        }
     </style>
 </head>
 <body>
     <h1 id="welcomeText">Hello! Welcome to Blockchain Quiz</h1>
     <button id="connectToMetamask">Login using MetaMask</button>
+    <button id="adminButton" onclick="window.location.href='admin.html'">I am Admin</button>
     <div id="addressContainer" style="display: none;">
         <p id="address">Connected address: <span id="ConnectedAddress"></span></p>
         <button id="nextPageButton" onclick="window.location.href='home_page.html'">→</button>
     </div>
 
     <script>
-        const contractAddress = '0x52291463aF4E2C5145cE3C209A996A82FB3E76c2';  
+        const contractAddress = '0x2D44156802dcc6bfaB67115393Bf57E8c9e5b579';  
         const contractABI = [
 	{
 		"inputs": [
@@ -113,19 +119,6 @@
 			}
 		],
 		"name": "addQuestion",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_score",
-				"type": "uint256"
-			}
-		],
-		"name": "attemptQuiz",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -477,25 +470,6 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_user",
-				"type": "address"
-			}
-		],
-		"name": "userHasAttempted",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
 				"name": "",
 				"type": "address"
 			}
@@ -513,7 +487,6 @@
 	}
 ]
 
-
         $("#connectToMetamask").click(async function() {
             if (window.ethereum) {
                 // Request account connection
@@ -524,18 +497,23 @@
                 // Initialize contract instance
                 const quizContract = new web3.eth.Contract(contractABI, contractAddress);
 
-                // Hide login button and welcome text
+                // Hide login button, welcome text, and admin button
                 $("#connectToMetamask").hide();
                 $("#welcomeText").hide();
+                $("#adminButton").hide(); // Hide "I am Admin" button after login
 
                 // Show address container
                 $("#addressContainer").css('display', 'block');
                 $('#ConnectedAddress').html(userAddress);
 
                 // Check if the user is an admin
-                const isAdmin = await quizContract.methods.isAdmin(userAddress).call();
+                const isAdmin = await quizContract.methods.admin().call();
                 console.log('Is admin:', isAdmin); 
 
+                // If admin, redirect or take appropriate actions
+                if (userAddress.toLowerCase() === isAdmin.toLowerCase()) {
+                    // Admin-specific logic can go here
+                }
             } else {
                 alert("Please install MetaMask to continue.");
             }
