@@ -1,8 +1,7 @@
 //JUST TO KEEP MY CONTRACT 
 
 
-CONTRACT ADDRESS : 0x52291463aF4E2C5145cE3C209A996A82FB3E76c2
-
+CONTRACT ADDRESS : 0x6Bc3ce3D718808Dffa6C3A9dFC17d4f090A1a399
 
 
 // SPDX-License-Identifier: MIT
@@ -33,7 +32,7 @@ contract QuizContract {
     // Events
     event QuestionAdded(uint256 id, string questionText, string[] options);
     event QuestionRemoved(uint256 id);
-    event QuizAttempted(address indexed user, uint256 score);
+    
     event ContactMessageReceived(uint256 id, string name, string email, string message);
     event ContactMessageRemoved(uint256 id);
 
@@ -90,24 +89,6 @@ contract QuizContract {
         return (q.questionText, q.options, q.correctAnswer);
     }
 
-    // Function to attempt the quiz
-    function attemptQuiz(uint256 _score) public {
-        require(!hasAttemptedQuiz[msg.sender], "User has already attempted the quiz");
-        hasAttemptedQuiz[msg.sender] = true;
-        userScores[msg.sender] = _score;
-        emit QuizAttempted(msg.sender, _score);
-    }
-
-    // Function to get the user's score
-    function getUserScore(address _user) public view returns (uint256) {
-        return userScores[_user];
-    }
-
-    // Function to check if the user has attempted the quiz
-    function userHasAttempted(address _user) public view returns (bool) {
-        return hasAttemptedQuiz[_user];
-    }
-
     // Function for users to submit contact messages
     function submitContactMessage(string memory _name, string memory _email, string memory _message) public {
         contactMessages.push(ContactMessage(_name, _email, _message));
@@ -147,9 +128,7 @@ contract QuizContract {
 
 
 
-
 ABI 
-
 
 [
 	{
@@ -171,19 +150,6 @@ ABI
 			}
 		],
 		"name": "addQuestion",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_score",
-				"type": "uint256"
-			}
-		],
-		"name": "attemptQuiz",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -273,25 +239,6 @@ ABI
 			}
 		],
 		"name": "QuestionRemoved",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "user",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "score",
-				"type": "uint256"
-			}
-		],
-		"name": "QuizAttempted",
 		"type": "event"
 	},
 	{
@@ -473,25 +420,6 @@ ABI
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_user",
-				"type": "address"
-			}
-		],
-		"name": "getUserScore",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
 				"name": "",
 				"type": "address"
 			}
@@ -526,25 +454,6 @@ ABI
 				"internalType": "uint256",
 				"name": "correctAnswer",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_user",
-				"type": "address"
-			}
-		],
-		"name": "userHasAttempted",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
