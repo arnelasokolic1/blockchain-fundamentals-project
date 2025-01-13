@@ -1,4 +1,6 @@
 # Blockchain Project: Decentralized Quiz App
+----- Code of the web applicationis on the quizapp branch -----
+----- Address of the contract is 0x6Bc3ce3D718808Dffa6C3A9dFC17d4f090A1a399 -----
 
 ## Overview
 
