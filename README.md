@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Blockchain Quiz App is an interactive web platform designed to help users learn more about blockchain technology. It currently offers 20 quiz questions, with plans to expand the number to over 50. Users are required to log in with their MetaMask wallet to access the quiz.
+The Blockchain Quiz App is an interactive web platform designed to help users learn more about blockchain technology. It currently offers 10 quiz questions, with plans to expand the number to over 50. Users are required to log in with their MetaMask wallet to access the quiz.
 
 ---
 
@@ -65,8 +65,18 @@ The user interface (UI) has been designed with a clean and modern aesthetic, pri
 
 ![Screenshot 1](Photo1.png)
 ![Screenshot 2](Photo2.png)
-![Screenshot 3](https://github.com/your-username/your-repository-name/raw/main/images/screenshot3.png)
-![Screenshot 4](https://github.com/your-username/your-repository-name/raw/main/images/screenshot4.png)
-![Screenshot 5](https://github.com/your-username/your-repository-name/raw/main/images/screenshot5.png)
-![Screenshot 6](https://github.com/your-username/your-repository-name/raw/main/images/screenshot6.png)
+![Screenshot 3](Photo3.png)
+![Screenshot 1](Photo4.png)
+![Screenshot 2](Photo5.png)
+![Screenshot 3](Photo6.png)
+![Screenshot 1](Photo7.png)
+![Screenshot 2](Photo8.png)
+![Screenshot 3](Photo9.png)
+![Screenshot 1](Photo10.png)
+![Screenshot 2](Photo11.png)
+
+
+
+
+
 
