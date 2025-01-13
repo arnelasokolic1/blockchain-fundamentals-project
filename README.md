@@ -1,12 +1,18 @@
 # Blockchain Project: Decentralized Quiz App
------ Code of the web application is on the quizapp branch -----
------ Address of the contract is 0x6Bc3ce3D718808Dffa6C3A9dFC17d4f090A1a399 -----
+
+The code for the web application is located on the `quizapp` branch of the repository.
+
+## Smart Contract
+
+The smart contract that powers the Blockchain Quiz App is deployed at the following address:
+
+- **Contract Address**: `0x6Bc3ce3D718808Dffa6C3A9dFC17d4f090A1a399`
 
 ## Overview
 
-The Blockchain Quiz App is an interactive web platform designed to help users learn more about blockchain technology. It currently offers 10 quiz questions, with plans to expand the number to over 50. Users are required to log in with their MetaMask wallet to access the quiz.
+The **Blockchain Quiz App** is an interactive web platform designed to help users learn more about blockchain technology. It currently offers 10 quiz questions, with plans to expand the number to over 50. Users are required to log in with their MetaMask wallet to access the quiz.
 
----
+
 
 ## Features
 
