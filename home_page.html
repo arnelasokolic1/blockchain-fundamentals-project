@@ -628,13 +628,14 @@
                         const options = questionData[1];
                         const correctAnswer = questionData[2];
 
-                        // Add question to main list
+                    
                         const questionItemDiv = document.createElement('div');
                         questionItemDiv.className = 'question-item';
                         questionItemDiv.innerHTML = 
                             `<strong>${questionText}</strong>
                             <hr>
                             <div class="options">
+					
                                 ${options.map((option, index) => 
                                     `<button class="option-btn" data-id="${i}" data-answer="${index + 1}" onclick="checkAnswer(event, ${correctAnswer}, ${questionCount})">
                                         ${option}
@@ -668,8 +669,7 @@
                 // Disable all options after the first click
                 buttons.forEach(button => button.disabled = true);
 
-                // Remove previous answer styling
-                buttons.forEach(button => button.classList.remove('correct', 'incorrect'));
+            
 
                 if (selectedAnswer === correctAnswer) {
                     selectedButton.classList.add('correct');
@@ -682,8 +682,7 @@
                     questionStatusDiv.querySelector('.status-icon').textContent = '❌';
                 }
 
-                const progress = Math.floor(((currentQuestionIndex + 1) / questionCount) * 100);
-                document.getElementById('progressBar').style.width = `${progress}%`;
+                
 
                 currentQuestionIndex++;
                 if (currentQuestionIndex === questionCount) {

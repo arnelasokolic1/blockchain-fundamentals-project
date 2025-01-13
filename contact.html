@@ -685,33 +685,31 @@
                 }
             }
 
-            // Submit contact message
-            async function submitContactMessage() {
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const email = document.getElementById('email').value;
-                const mobile = document.getElementById('mobile').value;
-                const message = document.getElementById('message').value;
 
-                const userAddress = await connectMetaMask();
+    async function submitContactMessage() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const mobile = document.getElementById('mobile').value;
+    const message = document.getElementById('message').value;
 
-                if (userAddress) {
-                    contract.methods.submitContactMessage(firstName, email, message).send({ from: userAddress })
-                        .on('transactionHash', function (hash) {
-                            console.log('Transaction hash:', hash);
-                        })
-                        .on('receipt', function (receipt) {
-                            console.log('Transaction receipt:', receipt);
-                            alert('Message sent successfully!');
-                        })
-                        .on('error', function (error) {
-                            console.error('Error:', error);
-                            alert('Error sending message.');
-                        });
-                }
-            }
+    const userAddress = await connectMetaMask();
 
-            // Fetch all messages from the contract
+    if (userAddress) {
+        contract.methods.submitContactMessage(firstName, email, message).send({ from: userAddress })
+            .on('receipt', function (receipt) {
+                console.log('Transaction receipt:', receipt);
+                alert('Message sent successfully!');
+            })
+            .on('error', function (error) {
+                console.error('Error:', error);
+                alert('Error sending message.');
+            });
+    }
+}
+
+
+            
             async function loadMessages() {
                 const messages = await contract.methods.getMessages().call();
                 const messagesList = document.getElementById("messagesList");
@@ -730,23 +728,21 @@
                 });
             }
 
-            // Delete a message
-            async function deleteMessage(index) {
-                const userAddress = await connectMetaMask();
-                if (userAddress) {
-                    contract.methods.deleteMessage(index).send({ from: userAddress })
-                        .on('transactionHash', function (hash) {
-                            console.log('Transaction hash:', hash);
-                        })
-                        .on('receipt', function (receipt) {
-                            console.log('Message deleted:', receipt);
-                            loadMessages(); // Reload messages after deletion
-                        })
-                        .on('error', function (error) {
-                            console.error('Error deleting message:', error);
-                        });
-                }
-            }
+       // Delete a message
+    async function deleteMessage(index) {
+    const userAddress = await connectMetaMask();
+    if (userAddress) {
+        contract.methods.deleteMessage(index).send({ from: userAddress })
+            .on('receipt', function (receipt) {
+                console.log('Message deleted:', receipt);
+                loadMessages(); 
+            })
+            .on('error', function (error) {
+                console.error('Error deleting message:', error);
+            });
+    }
+}
+
 
             // Add event listener to the submit button
             document.getElementById('submitMessage').addEventListener('click', function (event) {
