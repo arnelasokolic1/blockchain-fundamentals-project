@@ -65,7 +65,7 @@ The user interface (UI) has been designed with a clean and modern aesthetic, pri
 
 ![Screenshot 1](Photo1.png)
 ![Screenshot 2](Photo2.png)
-![Screenshot 3](Photo3.png)
+![Screenshot 3](Photo3a.png)
 ![Screenshot 1](Photo4.png)
 ![Screenshot 2](Photo5.png)
 ![Screenshot 3](Photo6.png)
