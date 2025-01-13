@@ -58,3 +58,15 @@ The user interface (UI) has been designed with a clean and modern aesthetic, pri
 - Additional features and improvements will be implemented based on user feedback.
 
 ---
+
+## Screenshots of the Website
+
+---
+
+![Screenshot 1](Photo1.png)
+![Screenshot 2](Photo2.png)
+![Screenshot 3](https://github.com/your-username/your-repository-name/raw/main/images/screenshot3.png)
+![Screenshot 4](https://github.com/your-username/your-repository-name/raw/main/images/screenshot4.png)
+![Screenshot 5](https://github.com/your-username/your-repository-name/raw/main/images/screenshot5.png)
+![Screenshot 6](https://github.com/your-username/your-repository-name/raw/main/images/screenshot6.png)
+
