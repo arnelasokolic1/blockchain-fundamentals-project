@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill in the Blanks</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(to left, #04286b, #bb1f5d, #e08e0a);
+        }
+
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            color: white !important;
+            font-size: 18px;
+        }
+
+        /* Sidebar Styles */
+        #levelSidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: #f4f4f9;
+            padding: 20px;
+            height: 100%;
+            border: 2px solid #bb1f5d;
+            border-radius: 25px;
+            margin-top: 15px;
+        }
+
+        #levelSidebar h4 {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        #levelSidebar .list-group-item {
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #levelSidebar .list-group-item:hover {
+            background-color: #04286b;
+            color: white;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .container {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        input {
+            padding: 5px;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .correct {
+            background-color: lightgreen;
+        }
+
+        .incorrect {
+            background-color: rgb(243, 106, 106);
+        }
+
+        .btn-finish {
+            display: block;
+            width: 100%;
+            background-color: #bb1f5d;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .btn-finish:hover {
+            background-color: #9b154a;
+        }
+
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20% auto;
+            padding: 20px;
+            width: 40%;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .modal button {
+            margin-top: 10px;
+            padding: 10px;
+            background: #bb1f5d;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Explanation Section */
+        .explanation {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        /* Statistics Section */
+        #statistics {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        #statistics h4 {
+            margin-bottom: 15px;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                margin-left: 0;
+            }
+
+            #levelSidebar {
+                position: relative;
+                width: 100%;
+                margin-top: 0;
+                border-radius: 0;
+                padding: 10px;
+            }
+
+            #levelSidebar .list-group-item {
+                font-size: 14px;
+            }
+
+            #quizContainer {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .container {
+                width: 100%;
+                margin: 10px;
+                padding: 1rem;
+            }
+
+            .modal-content {
+                width: 80%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar .navbar-brand {
+                font-size: 16px;
+            }
+
+            .container {
+                width: 90%;
+                margin-top: 20px;
+            }
+
+            .btn-finish {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home_page.html">Quiz App</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home_page.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About the Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="fill_in_blanks.html">Fill In The Blanks</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="learn_with_us.html">Learn with Us</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="levelSidebar">
+        <h4>Select Level</h4>
+        <ul class="list-group">
+            <li class="list-group-item" onclick="loadLevel(1)">Level 1: Easy</li>
+            <li class="list-group-item" onclick="loadLevel(2)">Level 2: Medium</li>
+            <li class="list-group-item" onclick="loadLevel(3)">Level 3: Hard</li>
+            <li class="list-group-item" onclick="loadLevel(4)">Level 4: Very Hard</li>
+            <li class="list-group-item" onclick="loadLevel(5)">Level 5: Expert</li>
+        </ul>
+
+        <!-- Show Statistics Button -->
+        <button class="btn-finish" onclick="toggleStatistics()">Show Statistics</button>
+
+        <!-- Statistics Section -->
+        <div id="statistics">
+            <h4>Statistics for the Last 3 Days</h4>
+            <p id="totalAnswered">Total Questions Answered: 0</p>
+            <p id="totalCorrect">Total Correct Answers: 0</p>
+            <p id="totalWrong">Total Incorrect Answers: 0</p>
+        </div>
+    </div>
+
+    <!-- Quiz Form -->
+    <div class="container" id="quizContainer">
+        <h1>Fill in the Blanks</h1>
+        <div class="explanation" id="explanation">
+            <p>Please select a level from the left sidebar to start the quiz.</p>
+        </div>
+        <form id="quizForm">
+            <div id="questionContainer"></div>
+            <button type="button" class="btn-finish" id="finishButton" onclick="submitQuiz()" style="display: none;">Finish</button>
+        </form>
+        <p id="note" style="color: red; text-align: center; margin-top: 20px;">* If the answer is left blank, it will be considered incorrect.</p>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <h2>Quiz Completed!</h2>
+            <p id="resultText"></p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Level questions and answers
+        const questionsByLevel = {
+            1: [
+                { question: "The technology behind Bitcoin is called", answer: "blockchain" },
+                { question: "Bitcoin is a type of", answer: "cryptocurrency" },
+                { question: "The first cryptocurrency was", answer: "bitcoin" },
+                { question: "Ethereum is a decentralized", answer: "platform" }
+            ],
+            2: [
+                { question: "A smart contract is a self-executing contract with the terms written in", answer: "code" },
+                { question: "Ethereum 2.0 uses this consensus algorithm", answer: "proof of stake" },
+                { question: "What is the name of Ethereum's virtual machine?", answer: "jvm" },
+                { question: "A DApp runs on a decentralized", answer: "network" }
+            ],
+            3: [
+                { question: "This is the algorithm used by Ethereum 1.0", answer: "proof of work" },
+                { question: "Blockchain transactions are confirmed by", answer: "miners" },
+                { question: "The creator of Bitcoin is known by the pseudonym", answer: "satoshi nakamoto" },
+                { question: "Ethereum smart contracts are written in", answer: "solidity" }
+            ],
+            4: [
+                { question: "The minimum transaction fee on the Ethereum network is called", answer: "gas" },
+                { question: "Ethereum's upcoming upgrade is called", answer: "ethereum 2.0" },
+                { question: "A group of Ethereum transactions bundled together is called a", answer: "block" },
+                { question: "The process of adding a block to the Ethereum blockchain is called", answer: "mining" }
+            ],
+            5: [
+                { question: "The number of Ethereum tokens in circulation is", answer: "uncapped" },
+                { question: "This technology enables smart contracts to run on the Ethereum network", answer: "solidity" },
+                { question: "Which Ethereum network upgrade will improve scalability and energy efficiency?", answer: "ethereum 2.0" },
+                { question: "Which protocol is used for decentralized finance (DeFi) on Ethereum?", answer: "uniswap" }
+            ]
+        };
+
+        // Statistics object
+        let stats = JSON.parse(localStorage.getItem('quizStats')) || {
+            totalAnswered: 0,
+            totalCorrect: 0,
+            totalWrong: 0
+        };
+
+        let selectedLevel = null;
+
+        // Load quiz level questions
+        function loadLevel(level) {
+            selectedLevel = level;
+            document.getElementById('explanation').style.display = 'none';
+            document.getElementById('questionContainer').innerHTML = '';
+            document.getElementById('finishButton').style.display = 'block';
+
+            let questions = questionsByLevel[level];
+            questions.forEach((question, index) => {
+                let questionHTML = `
+                    <div class="question">
+                        <p>${question.question}</p>
+                        <input type="text" name="q${index + 1}" />
+                    </div>
+                `;
+                document.getElementById('questionContainer').innerHTML += questionHTML;
+            });
+        }
+
+        // Toggle statistics visibility
+        function toggleStatistics() {
+            let statsSection = document.getElementById('statistics');
+            statsSection.style.display = statsSection.style.display === 'none' ? 'block' : 'none';
+
+            // Display statistics in the sidebar
+            document.getElementById('totalAnswered').textContent = `Total Questions Answered: ${stats.totalAnswered}`;
+            document.getElementById('totalCorrect').textContent = `Total Correct Answers: ${stats.totalCorrect}`;
+            document.getElementById('totalWrong').textContent = `Total Incorrect Answers: ${stats.totalWrong}`;
+        }
+
+        // Submit quiz
+        function submitQuiz() {
+            if (selectedLevel === null) {
+                alert("Please select a level first.");
+                return;
+            }
+
+            let correctAnswers = 0;
+            let questions = questionsByLevel[selectedLevel];
+
+            // Check answers
+            questions.forEach((question, index) => {
+                let userAnswer = document.querySelector(`input[name="q${index + 1}"]`).value.trim().toLowerCase();
+                let isCorrect = userAnswer === question.answer.toLowerCase();
+                let inputElement = document.querySelector(`input[name="q${index + 1}"]`);
+                inputElement.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) {
+                    correctAnswers++;
+                }
+            });
+
+            // Update statistics
+            stats.totalAnswered++;
+            stats.totalCorrect += correctAnswers;
+            stats.totalWrong += (questions.length - correctAnswers);
+            localStorage.setItem('quizStats', JSON.stringify(stats));
+
+            // Display result
+            let resultText = `${correctAnswers} out of ${questions.length} correct.`;
+            document.getElementById('resultText').textContent = resultText;
+            document.getElementById('resultModal').style.display = 'block';
+        }
+
+        // Close result modal
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
