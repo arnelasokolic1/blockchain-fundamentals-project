@@ -108,60 +108,25 @@
             background-color: #9b154a;
         }
 
-        /* Modal Popup */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 20% auto;
-            padding: 20px;
-            width: 40%;
-            text-align: center;
-            border-radius: 10px;
-        }
-
-        .modal button {
-            margin-top: 10px;
-            padding: 10px;
-            background: #bb1f5d;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Explanation Section */
-        .explanation {
-            text-align: center;
-            font-size: 18px;
-            color: #333;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-        }
-
         /* Statistics Section */
         #statistics {
             display: none;
-            background-color: #fff;
+            background: linear-gradient(to left, #04286b, #bb1f5d, #e08e0a);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
+            color: white;
         }
 
         #statistics h4 {
             margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        #statistics p {
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
         /* Media Queries for Responsiveness */
@@ -245,6 +210,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="learn_with_us.html">Learn with Us</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -286,15 +252,6 @@
         <p id="note" style="color: red; text-align: center; margin-top: 20px;">* If the answer is left blank, it will be considered incorrect.</p>
     </div>
 
-    <!-- Result Modal -->
-    <div id="resultModal" class="modal">
-        <div class="modal-content">
-            <h2>Quiz Completed!</h2>
-            <p id="resultText"></p>
-            <button onclick="closeModal()">OK</button>
-        </div>
-    </div>
-
     <!-- JavaScript -->
     <script>
         // Level questions and answers
@@ -309,38 +266,33 @@
                 { question: "A smart contract is a self-executing contract with the terms written in", answer: "code" },
                 { question: "Ethereum 2.0 uses this consensus algorithm", answer: "proof of stake" },
                 { question: "What is the name of Ethereum's virtual machine?", answer: "jvm" },
-                { question: "A DApp runs on a decentralized", answer: "network" }
+                { question: "What is a ledger in blockchain?", answer: "record" }
             ],
             3: [
-                { question: "This is the algorithm used by Ethereum 1.0", answer: "proof of work" },
-                { question: "Blockchain transactions are confirmed by", answer: "miners" },
-                { question: "The creator of Bitcoin is known by the pseudonym", answer: "satoshi nakamoto" },
-                { question: "Ethereum smart contracts are written in", answer: "solidity" }
+                { question: "The technology enabling blockchain's security is called", answer: "cryptography" },
+                { question: "This is a decentralized platform for smart contracts", answer: "ethereum" },
+                { question: "A transaction on the blockchain is verified by a network of", answer: "miners" },
+                { question: "In blockchain, what does P2P stand for?", answer: "peer to peer" }
             ],
             4: [
-                { question: "The minimum transaction fee on the Ethereum network is called", answer: "gas" },
-                { question: "Ethereum's upcoming upgrade is called", answer: "ethereum 2.0" },
-                { question: "A group of Ethereum transactions bundled together is called a", answer: "block" },
-                { question: "The process of adding a block to the Ethereum blockchain is called", answer: "mining" }
+                { question: "Bitcoin is based on the principle of this technology", answer: "blockchain" },
+                { question: "This is a decentralized finance application that allows lending and borrowing", answer: "compound" },
+                { question: "What does the term 'fork' refer to in blockchain technology?", answer: "upgrading the protocol" }
             ],
             5: [
-                { question: "The number of Ethereum tokens in circulation is", answer: "uncapped" },
-                { question: "This technology enables smart contracts to run on the Ethereum network", answer: "solidity" },
-                { question: "Which Ethereum network upgrade will improve scalability and energy efficiency?", answer: "ethereum 2.0" },
-                { question: "Which protocol is used for decentralized finance (DeFi) on Ethereum?", answer: "uniswap" }
+                { question: "This platform allows you to create decentralized applications and smart contracts", answer: "ethereum" },
+                { question: "This term refers to blockchain's inherent inability to be tampered with", answer: "immutability" }
             ]
         };
 
-        // Statistics object
+        let selectedLevel = null;
         let stats = JSON.parse(localStorage.getItem('quizStats')) || {
             totalAnswered: 0,
             totalCorrect: 0,
             totalWrong: 0
         };
 
-        let selectedLevel = null;
-
-        // Load quiz level questions
+        // Load questions for selected level
         function loadLevel(level) {
             selectedLevel = level;
             document.getElementById('explanation').style.display = 'none';
@@ -348,66 +300,218 @@
             document.getElementById('finishButton').style.display = 'block';
 
             let questions = questionsByLevel[level];
-            questions.forEach((question, index) => {
-                let questionHTML = `
+            let quizHTML = '';
+
+            questions.forEach((q, index) => {
+                quizHTML += `
                     <div class="question">
-                        <p>${question.question}</p>
-                        <input type="text" name="q${index + 1}" />
+                        <label>${q.question}</label>
+                        <input type="text" id="answer-${index}" />
                     </div>
                 `;
-                document.getElementById('questionContainer').innerHTML += questionHTML;
             });
+
+            document.getElementById('questionContainer').innerHTML = quizHTML;
         }
 
-        // Toggle statistics visibility
-        function toggleStatistics() {
-            let statsSection = document.getElementById('statistics');
-            statsSection.style.display = statsSection.style.display === 'none' ? 'block' : 'none';
-
-            // Display statistics in the sidebar
-            document.getElementById('totalAnswered').textContent = `Total Questions Answered: ${stats.totalAnswered}`;
-            document.getElementById('totalCorrect').textContent = `Total Correct Answers: ${stats.totalCorrect}`;
-            document.getElementById('totalWrong').textContent = `Total Incorrect Answers: ${stats.totalWrong}`;
-        }
-
-        // Submit quiz
+        // Submit quiz and check answers
         function submitQuiz() {
-            if (selectedLevel === null) {
-                alert("Please select a level first.");
-                return;
-            }
-
-            let correctAnswers = 0;
             let questions = questionsByLevel[selectedLevel];
+            let correctAnswers = 0;
+            let incorrectAnswers = 0;
 
-            // Check answers
-            questions.forEach((question, index) => {
-                let userAnswer = document.querySelector(`input[name="q${index + 1}"]`).value.trim().toLowerCase();
-                let isCorrect = userAnswer === question.answer.toLowerCase();
-                let inputElement = document.querySelector(`input[name="q${index + 1}"]`);
-                inputElement.classList.add(isCorrect ? 'correct' : 'incorrect');
-                if (isCorrect) {
+            questions.forEach((q, index) => {
+                let userAnswer = document.getElementById(`answer-${index}`).value.toLowerCase().trim();
+                if (userAnswer === q.answer.toLowerCase()) {
+                    document.getElementById(`answer-${index}`).classList.add('correct');
                     correctAnswers++;
+                } else {
+                    document.getElementById(`answer-${index}`).classList.add('incorrect');
+                    incorrectAnswers++;
                 }
             });
 
             // Update statistics
-            stats.totalAnswered++;
+            stats.totalAnswered += questions.length;
             stats.totalCorrect += correctAnswers;
-            stats.totalWrong += (questions.length - correctAnswers);
+            stats.totalWrong += incorrectAnswers;
+
             localStorage.setItem('quizStats', JSON.stringify(stats));
 
-            // Display result
-            let resultText = `${correctAnswers} out of ${questions.length} correct.`;
-            document.getElementById('resultText').textContent = resultText;
-            document.getElementById('resultModal').style.display = 'block';
+            // Update statistics on sidebar
+            document.getElementById('totalAnswered').textContent = `Total Questions Answered: ${stats.totalAnswered}`;
+            document.getElementById('totalCorrect').textContent = `Total Correct Answers: ${stats.totalCorrect}`;
+            document.getElementById('totalWrong').textContent = `Total Incorrect Answers: ${stats.totalWrong}`;
+
+            // Clear fields after 3 seconds
+            setTimeout(() => {
+                questions.forEach((q, index) => {
+                    document.getElementById(`answer-${index}`).value = '';
+                    document.getElementById(`answer-${index}`).classList.remove('correct', 'incorrect');
+                });
+            }, 3000);
         }
 
-        // Close result modal
-        function closeModal() {
-            document.getElementById('resultModal').style.display = 'none';
+        // Toggle Statistics visibility
+        function toggleStatistics() {
+            let statsSection = document.getElementById('statistics');
+            statsSection.style.display = statsSection.style.display === 'none' ? 'block' : 'none';
         }
     </script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Fact</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
+    <style>
+        .fact {
+            position: absolute;
+            padding: 10px;
+            background-color: #ffcc00;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 1s ease;
+            max-width: 200px;
+            word-wrap: break-word;
+            z-index: 999;
+        }
+
+        /* Mascot Image as Button */
+        .mascot {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            position: fixed;
+            top: 50%;
+            left: 6.7cm;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mascot Image as Button -->
+    <img src="imgs/Maskota.png" alt="Mascot" class="mascot" id="mascot" onclick="showFact()">
+
+    <script>
+        // Your contract ABI and address (replace with your actual deployed contract ABI and address)
+        const contractABI = [{
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "seed",
+                "type": "uint256"
+            }],
+            "name": "getRandomFact",
+            "outputs": [{
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }],
+            "stateMutability": "view",
+            "type": "function"
+        }];
+
+        const contractAddress = "0x3F98F9459501c4709781b7d93c53De60Fb86C3B6"; // Replace with your contract's address
+
+        // Set up Web3 provider (MetaMask)
+        if (window.ethereum) {
+            var web3 = new Web3(window.ethereum);
+            window.ethereum.enable(); // Request access to MetaMask
+        } else {
+            alert("Please install MetaMask to interact with the contract.");
+        }
+
+        // Create contract instance
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+        // Function to fetch random blockchain fact from the contract
+        async function getRandomFactFromContract() {
+            try {
+                const accounts = await web3.eth.getAccounts();
+                const randomSeed = Math.floor(Math.random() * 1000); // Random seed
+                const fact = await contract.methods.getRandomFact(randomSeed).call({ from: accounts[0] });
+                return fact;
+            } catch (error) {
+                console.error("Error fetching fact from contract:", error);
+                return "Failed to fetch fact from the blockchain.";
+            }
+        }
+
+        // Flag to block click on mascot for 3 seconds
+        let canClickMascot = true;
+
+        // Function to show the fact
+        async function showFact() {
+            if (!canClickMascot) return; // Prevent click if blocked
+
+            // Block clicking on the mascot for 3 seconds
+            canClickMascot = false;
+
+            const factText = await getRandomFactFromContract();
+            const factElement = document.createElement("div");
+            factElement.classList.add("fact");
+            factElement.textContent = factText;
+
+            // Get the mascot's position
+            const mascot = document.getElementById("mascot");
+            const mascotRect = mascot.getBoundingClientRect();
+
+            // Set fact's position relative to the mascot
+            factElement.style.top = mascotRect.top + "px";
+            factElement.style.left = mascotRect.right + 10 + "px"; // Place fact slightly to the right of mascot
+
+            document.body.appendChild(factElement);
+
+            // Make the fact disappear after 3 seconds
+            setTimeout(function () {
+                factElement.remove();
+            }, 5000);
+
+            // Re-enable clicking after 3 seconds
+            setTimeout(function () {
+                canClickMascot = true;
+            }, 5000);
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

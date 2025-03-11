@@ -128,7 +128,7 @@ contract QuizContract {
 
 
 
-ABI 
+/*ABI 
 
 [
 	{
@@ -479,3 +479,4 @@ ABI
 		"type": "function"
 	}
 ]
+*/
